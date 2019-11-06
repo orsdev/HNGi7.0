@@ -13,7 +13,6 @@ if (isset($_GET["editAdminId"])) {
 ?>
 <!DOCTYPE html>
 <html>
-
 <head>
  <meta charset="UTF-8" />
  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -45,8 +44,10 @@ if (isset($_GET["editAdminId"])) {
   }
  </style>
 
-</head>
+		}
+	</style>
 
+</head>
 <body>
  <div class="container-fluid mx-auto admin__content">
   <h2 class="admin__details">Admin Details </h2>
@@ -155,7 +156,7 @@ if (isset($_GET["editAdminId"])) {
  </div>
 
 </body>
-
 </html>
 
-<script type="text/javascript" src="js/sidebar.js"></script>
+<script  type="text/javascript" src="js/sidebar.js"></script>
+<script type="text/javascript" src="js/dashboard.js"></script>
