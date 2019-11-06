@@ -20,11 +20,13 @@ if (isset($_GET["editAdminId"])) {
  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
  <title>View Admin</title>
  <link rel="icon" type="img/png" href="images/hng-favicon.png">
- <link rel="stylesheet" href="css/dashboard.css">
- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
- <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
+ <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+
+ <!-- Latest compiled and minified CSS -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+
+ <link rel="stylesheet" href="css/viewAdmin.css">
 
  <!-- jQuery library -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -46,100 +48,114 @@ if (isset($_GET["editAdminId"])) {
 </head>
 
 <body>
- <main>
-  <section id="overview-section">
-   <!-- <h1>Dashboard</h1> -->
-   <br><br>
-   <h2>Admin Details </h2>
-   <!-- <section id="intern-section">
-                Populated by `js/dashboard.js` 
-            </section> -->
+ <div class="container-fluid mx-auto admin__content">
+  <h2 class="admin__details">Admin Details </h2>
+  <div class="row w-100 mx-auto">
+   <div class="col-lg-3 col-md-4 profile">
 
-   <div class="container">
-    <div class="row">
-     <div class="col-md-6">
+    <?php
+    if ($_SESSION["hasPic"] == "no") {
+     // admin has NO picture, show default
+     echo '<img src="adminProfilePics/default.jpg" height="90px" width="90px"/>';
+    } else if ($_SESSION["hasPic"] == "yes") {
+     // admin has picture
+     echo '<img src="adminProfilePics/' . $_SESSION["admin_id"] . '.jpg" class="img-circle img-responsive" height="90px" width="90px" />';
+    }
+    ?>
 
-      <div class="row">
-       <div class="col-md-3">
-        <h4>Fullname</h4>
-       </div>
-       <div class="col-md-6">
-        <h4><?php echo $res["firstname"] . ' ' . $res["lastname"]; ?></h4>
-       </div>
-      </div>
+    <div id="user__profile">
+     <kbd class="kbd text-light"><?php echo $_SESSION["fullname"]; ?></kbd>
 
-      <div class="row">
-       <div class="col-md-3">
-        <h4>Email</h4>
-       </div>
-       <div class="col-md-6">
-        <h4><?php echo $res["email"]; ?></h4>
-       </div>
-      </div>
-
-      <div class="row">
-       <div class="col-md-3">
-        <h4>Role</h4>
-       </div>
-       <div class="col-md-6">
-        <h4><?php if ($res["role"] == 1) {
-             echo "Super Admin";
-            } else {
-             echo "Admin";
-            } ?></h4>
-       </div>
-      </div>
-
-      <div class="row">
-       <div class="col-md-3">
-        &nbsp;
-       </div>
-       <div class="col-md-6">
-        <a href="admins.php"><button class="btn btn-primary">All Admins</button></a>
-        <!--  <a href="deleteAdmin.php?deleteAdminId=<?php echo $id; ?>"><button class="btn btn-danger">Delete</button></a> -->
-       </div>
-      </div>
-
-     </div>
+     <div class="role">
+     <h5 class="text-light badge badge-primary">ADMINISTRATOR</h5>
+     <hr  class="border__bottom">
     </div>
+    </div>
+
+      <div class="menu">
+       <li class="item" id="dashboard">
+        <a href="dashboard.php" class="btns menu-headings"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+       </li>
+       <li class="item" id="users">
+        <a href="#users" class="btns menu-headings"><i class="fas fa-users"></i>Users<span class="chevron"></span></a>
+        <div class="submenu">
+         <a href="admins.php"><i class="fas fa-user-shield"></i>Admins</a>
+         <a href="registered_interns.php"> <i class="fas fa-user-graduate"></i>Interns</a>
+         <a href="registered_mentors.php"><i class="fas fa-hands-helping"></i>Mentors</a>
+         <a href="registered_sponsors.php"><i class="fas fa-hand-holding-usd"></i>Sponsors</a>
+        </div>
+       </li>
+
+       <li class="item" id="features">
+        <a href="#features" class="btns menu-headings"><i class="fas fa-tools"></i>Features<span class="chevron"></span></a>
+        <div class="submenu">
+         <a href="internreview.php"><i class="fas fa-history"></i>Reviews</a>
+         <a href="updateCountdown.php"><i class="far fa-clock"></i>CountDown</a>
+         <a class="news" href="news_update.php"><i class="far fa-newspaper"></i>News Update</a>
+        </div>
+       </li>
+       <?php
+       if ($_SESSION["role"] == 1) {
+        '<a href="admins.php">Admins</a>';
+       }
+       ?>
+
+
+       <li class="item">
+        <a href="./logout.php" class="btns"><i class="fas fa-sign-out-alt"></i>Logout</a>
+       </li>
+      </div>
    </div>
 
-   <!-- <button id="export">Export to Spreadsheet</button> -->
+   <div class="col-lg-8 col-md-7 details mt-5">
 
-  </section>
-  <!-- <section id="details-section">
-            <div id="details-back">
-                <div>
-                    <a href="overview.html" id="newitem-go-back" title="Go back">
-                        <div></div>
-                    </a>
-                </div>
-            </div>
-            <h2>Intern application details</h2>
-            <em id="no-intern">No intern selected</em>
-            <br />
-            <p>Name: <span id="details-name"></span></p>
-            <p>Email: <span id="details-email"></span></p>
-            <p>Age: <span id="details-age"></span></p>
-            <p>Phone Number: <span id="details-number"></span></p>
-            <p>Track of interest: <span id="details-track"></span></p>
-            <p>CV link: <span id="details-CV-link"></span></p>
-            <p>State of residence: <span id="details-state-of-residence"></span></p>
-            <div href="" id="details-return">Back to Overview</div>
-        </section> -->
- </main>
+    <div class="container-fluid">
 
- <input type="checkbox" id="mobile-bars-check" />
- <label for="mobile-bars-check" id="mobile-bars">
-  <div class="stix" id="stik1"></div>
-  <div class="stix" id="stik2"></div>
-  <div class="stix" id="stik3"></div>
- </label>
+     <div class="fullname">
+      <h4 class="contact">Full Name</h4>
+      <h4 class="contact__details">
+       <?php echo $res["firstname"] . ' ' . $res["lastname"]; ?>
+      </h4>
+      <hr class="horizontal__line">
+     </div>
 
- <?php include('fragments/sidebar.php'); ?>
+     <div class="email my-5">
+      <h4 class="contact">Email</h4>
+      <h4 class="contact__details">
+       <?php echo $res["email"]; ?>
+      </h4>
+      <hr class="horizontal__line">
+     </div>
+
+     <div class="role">
+      <h4 class="contact">Role</h4>
+      <h4 class="contact__details">
+       <?php if ($res["role"] == 1) {
+        echo "Super Admin";
+       } else {
+        echo "Admin";
+       } ?>
+      </h4>
+      <hr class="horizontal__line">
+     </div>
+
+     <div class="admin__button">
+      <a href="admins.php">
+       <button class="btn btn-lg btn-primary">All Admins</button>
+      </a>
+      <span class=" ml-2 badge">
+       <?php echo $id; ?>
+      </span>
+
+     </div>
+
+    </div>
+   </div>
+  </div>
+ </div>
 
 </body>
 
 </html>
 
-<script type="text/javascript" src="js/dashboard.js"></script>
+<script type="text/javascript" src="js/sidebar.js"></script>
